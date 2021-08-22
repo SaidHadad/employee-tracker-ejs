@@ -4,9 +4,9 @@ const app = express()
 const router = express.Router()
 const mysql = require("mysql")
 const config = require("./config")
+const bodyParser = require("body-parser")
 
-
-app.use(express.static("public"));
+app.use(express.static(__dirname + '/public'));
 app.set("view engine", "ejs");
 
 app.use(express.urlencoded({extended: true}));
@@ -15,67 +15,88 @@ app.use(express.json()) // To parse the incoming requests with JSON payloads
 const dbConnection = mysql.createConnection(config.dbConfig);
 
 dbConnection.connect((err)=>{
-    if(err){
-        throw err;
+    if(err){    
+        throw err
+        //return console.error('error: ' + err.message);
     }
-
     console.log("Connected to the Database");
 });
 
-router.get("/employee/:id", function(req, res) {
+
+router.get("/", function (req, res) {
+    const query = "SELECT * FROM personel ORDER BY id ASC"
+    //err
+    dbConnection.query(query, (err, result)=> {
+        if(err){
+            throw err
+        }
+        //renders homepage if data reterival is successful
+        res.render("index", {
+            personel: result,
+        });
+    });  
+});
+
+router.get("/empdetails/:id", function(req, res) {
 
     const empId = req.params.id
 
-    const query = `select * from employees where id = ${empId}`
+    const query = `SELECT * FROM personel WHERE id = ${empId}`
 
     dbConnection.query(query, (err, result) => {
         if(err) {
             throw err
         }
-        res.render("employee", {
-            employee: result[0]
+        res.render("empdetails", {
+            personel: result[0]
         })
     })
 })
 
-router.get("/add-emp", function(req, res) {
-    res.render("add-emp")
+router.get("/addemp", function(req, res) {
+    res.render("addemp")
 })
 
 router.post("/del-emp", function(req, res) {
-    const query = `delete from employees where id = ${req.body.id}`
+    const query = `DELETE FROM personel WHERE id = ${req.body.id}`
     dbConnection.query(query, (err, result) => {
         if(err){
             throw err            
         }
-        console.log('delete tabale')
+        console.log('delete table')
         res.writeHead(302)
         res.end()
     })
 })
 
-router.post("/employee", function(req, res){
-    const query = `insert into employees (name, age) values (${req.body.name}, ${req.body.age})`
+router.post("/insert-emp", function(req, res){
+    const query = `INSERT INTO personel (first_name, last_name, age) VALUES ("${req.body.first_name}", "${req.body.last_name}", "${req.body.age}");`
+    
     dbConnection.query(query, (err, result) => {
         if(err) {
             throw err
         }
+        console.log("personel added")
         res.writeHead(304, {location: "/"})
         res.end()
         
     })
-    employee.result[0]
 })
 
-router.post("/employee", function(req, res) {
+router.post("/update-emp", function(req, res) {
     const query = `update employees set name = '${req.body.name}', age='${req.body.age}' where id = ${req.body.id}`
     dbConnection.query(query, (err, result) => {
         if(err) {
             throw err
         }
-    }       
-}
-
-app.listen(8080, () => {
-    console.log("Server listening to port 8080")
+        res.writeHead(302, { location: "/"})
+        res.end()
+    })
+    employee.result[0]
 })
+
+app.use("/", router)
+
+app.listen(config.serverPort,()=>{
+    console.log('Server listening to 8081');
+});

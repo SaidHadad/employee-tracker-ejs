@@ -1,2 +1,44 @@
-<% include partials/header.ejs %> 
+<%- include('partials/header') %> 
 
+<div class="container">
+    <% if (personel.length > 0) { %>
+        <ul>
+            <% personel.forEach(employee => { %>
+            <li id="<%= employee.id %>">
+                <%= employee.name %>
+                <a href="/empdetails/<%= employee.id %>"><%= employee.first_name %> <%= employee.last_name %></a>
+                <span class="delete">&#10005;</span>
+            </li>   
+            <% }) %>
+        </ul>        
+    <% } else { %>
+        <p>No employees to show.</p>
+    <% } %>
+        <a href="/addemp"><button>Add an employee</button></a>
+</div>
+<%- include('partials/footer') -%>
+                
+<script>
+    window.addEventListener("DOMContentLoaded", function() {
+        console.log("Loaded!");
+        
+        const clickHandler = (event) => {
+            console.log("clicked", event.currentTarget.parentElement.id);
+            fetch("/del-emp", {
+                method: "post",
+                headers:{
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({id:event.currentTarget.parentElement.id})
+            }).then(res => {
+                window.location.reload();
+            })
+            .catch(err=> console.log('err', err));
+        };
+        
+        Array.from(document.getElementsByClassName("delete")).forEach((btn) => {
+            btn.addEventListener("click", clickHandler, false);
+        });
+    });
+</script>

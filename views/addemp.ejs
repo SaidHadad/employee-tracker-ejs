@@ -1,0 +1,18 @@
+<a href="/"><%- include('partials/header') -%></a>
+
+<h3>Add Employee</h3>
+<form action="/insert-emp" method="post">
+Employee Name:
+<input type="text" name="first_name" id="first_name" />
+<br />
+Employee Last Name:
+<input type="text" name="last_name" id="last_name" />
+<br />
+Employee Age : 
+<input type="text" name="age" id="age">
+<br/>
+
+<a href="/"><button>Add employee</button></a>
+</form>
+
+<%- include('partials/footer')  %> 

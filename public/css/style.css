@@ -1,0 +1,41 @@
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  min-height: 100px;
+  height: auto;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+body {
+  background-color: rgb(220, 233, 247);
+  width: auto;
+}
+
+h1{
+  font-size: 3rem;
+  height: 10vh;
+  background-color: #dc3545;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f8f9fa;
+}
+
+.delete {
+  color: red;
+}
+
+.contact-info {
+  height: min-content;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-info p,
+.contact-info h3,
+.contact-info ul {
+  margin: 0;
+}
