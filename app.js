@@ -1,10 +1,10 @@
 const express = require('express')
 const path = require("path")
-const app = express()
-const router = express.Router()
 const mysql = require("mysql")
 const config = require("./config")
-const bodyParser = require("body-parser")
+
+const app = express()
+const router = express.Router()
 
 app.use(express.static(__dirname + '/public'));
 app.set("view engine", "ejs");

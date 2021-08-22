@@ -2,43 +2,39 @@
 
 <div class="container">
     <% if (personel.length > 0) { %>
-        <ul>
+        <ul class="list-group mb-3 contact-info">
             <% personel.forEach(employee => { %>
-            <li id="<%= employee.id %>">
-                <%= employee.name %>
-                <a href="/empdetails/<%= employee.id %>"><%= employee.first_name %> <%= employee.last_name %></a>
-                <span class="delete">&#10005;</span>
+            <li class="list-group-item list-group-item list-group-item-action d-flex justify-content-between align-items-center"id="<%= employee.id %>">
+                <a id="<%= employee.id %>"href="/empdetails/<%= employee.id %>"><%= employee.first_name %> <%= employee.last_name %></a>
+                <i class = "fas fa-trash-alt text-danger delete"></i>
             </li>   
             <% }) %>
         </ul>        
     <% } else { %>
         <p>No employees to show.</p>
     <% } %>
-        <a href="/addemp"><button>Add an employee</button></a>
+        <a href="/addemp"><button class="btn-primary">Add an employee</button></a>
 </div>
 <%- include('partials/footer') -%>
                 
 <script>
-    window.addEventListener("DOMContentLoaded", function() {
-        console.log("Loaded!");
-        
-        const clickHandler = (event) => {
-            console.log("clicked", event.currentTarget.parentElement.id);
-            fetch("/del-emp", {
-                method: "post",
-                headers:{
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({id:event.currentTarget.parentElement.id})
-            }).then(res => {
-                window.location.reload();
-            })
-            .catch(err=> console.log('err', err));
-        };
-        
-        Array.from(document.getElementsByClassName("delete")).forEach((btn) => {
-            btn.addEventListener("click", clickHandler, false);
-        });
-    });
+const deleteItem = () => {
+    console.log("clicked", event.currentTarget.parentElement.id);
+        fetch("/del-emp", {
+            method: "post",
+            headers:{
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({id:event.currentTarget.parentElement.id})
+        }).then(res => {
+            window.location.reload();
+        })
+        .catch(err=> console.log('err', err));
+}
+
+deleteButton = document.querySelectorAll(".delete").forEach(el => {
+    el.addEventListener('click', deleteItem);
+});
+
 </script>
