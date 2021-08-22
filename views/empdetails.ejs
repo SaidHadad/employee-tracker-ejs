@@ -1,10 +1,14 @@
 <a href="/"><%- include('partials/header') -%></a>
-<h2>Employee Details</h1>
 
-<ul>
-    <li>Employee ID: <%= personel.id %></li>
-    <li>Employee Name: <%= personel.first_name%> <%= personel.last_name%></li>
-    <li>Age: <%= personel.age%></li>
-    </ul>
+<div class="container align-items-center">
+    <div class="row col-4 d-flex flex-column border border-primary">
+        <h2>Employee Details</h1>
+        <ul>
+            <li>Employee ID: <%= personel.id %></li>
+            <li>Employee Name: <%= personel.first_name%> <%= personel.last_name%></li>
+            <li>Age: <%= personel.age%></li>
+        </ul>
+    </div>
+</div>
     
 <%- include('partials/footer') -%>

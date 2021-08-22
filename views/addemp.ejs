@@ -1,18 +1,53 @@
 <a href="/"><%- include('partials/header') -%></a>
 
-<h3>Add Employee</h3>
-<form action="/insert-emp" method="post">
-Employee Name:
-<input type="text" name="first_name" id="first_name" />
-<br />
-Employee Last Name:
-<input type="text" name="last_name" id="last_name" />
-<br />
-Employee Age : 
-<input type="text" name="age" id="age">
-<br/>
+<div class="container">
+  <div class="row col-4 d-flex flex-column">
 
-<a href="/"><button>Add employee</button></a>
-</form>
+    <h3>Add Employee</h3>
+    <form class="form-group">
+      <label for="employeeFirstName">Employee Name</label>
+      <input type="text" name="first_name" id="first_name" class="form-control" placeholder="Employee First Name" />
+    </form>
+    <form class="form-group">
+      <label for="employeeLastName">Employee Last Name</label>
+      <input type="text" name="last_name" id="last_name" class="form-control" placeholder="Employee Last Name" />
+    </form>
+    <form class="form-group">
+      <label for="employeeAge">Employee Age</label>
+      <input type="text" name="employeeAge" id="employeeAge" class="form-control" placeholder="Employee Age" />
+    </form>
+    <button class="btn btn-primary btn-lg addButton" >Add employee</button>
+  </div>
+</div>
+
+<script>
+  
+  const addItem = () => {
+    const first_name = document.querySelector('#first_name').value;
+    const last_name = document.querySelector('#last_name').value;
+    const age = document.querySelector('#employeeAge').value;
+
+    const response = fetch("/insert-emp", {
+        method: "post",
+        body: JSON.stringify({
+            first_name,
+            last_name,
+            age
+        }),
+        headers: { 'Content-Type': 'application/json' }
+    })
+    .then(res => {
+      location.href = "/";
+    })
+    .catch(err => {
+            console.log(err);
+            res.status(500).json(err);
+        });
+  }
+  
+  
+  document.querySelector('.addButton').addEventListener('click', addItem);
+  
+  </script>
 
 <%- include('partials/footer')  %> 

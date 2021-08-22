@@ -77,7 +77,6 @@ router.post("/insert-emp", function(req, res){
             throw err
         }
         console.log("personel added")
-        res.writeHead(304, {location: "/"})
         res.end()
         
     })
